@@ -72,6 +72,31 @@
     .product-info p { margin: 7px 0 13px; color: var(--muted); font-size: 11px; }
     .add-button { width: 100%; padding: 11px 12px; border: 1px solid #cbd2c8; background: transparent; cursor: pointer; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; transition: all .2s ease; }
     .add-button:hover { border-color: var(--ink); background: var(--ink); color: white; }
+    .cart-dialog { width: min(560px, calc(100% - 28px)); max-height: min(88vh, 850px); padding: 0; border: 0; background: var(--paper); color: var(--ink); box-shadow: 0 20px 70px rgba(20,35,25,.25); }
+    .cart-dialog::backdrop { background: rgba(25,39,30,.55); backdrop-filter: blur(3px); }
+    .cart-dialog-inner { padding: 28px; }
+    .cart-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .cart-header .eyebrow { margin-bottom: 8px; }
+    .cart-header h2 { margin: 0; font-family: var(--serif); font-size: 32px; font-weight: 500; }
+    .close-cart { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; font-size: 20px; }
+    .cart-lines { display: grid; gap: 16px; max-height: 245px; overflow-y: auto; padding: 19px 0; }
+    .cart-line { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .cart-item-name { margin-bottom: 5px; font-family: var(--serif); font-size: 17px; }
+    .cart-item-price { color: var(--muted); font-size: 11px; }
+    .quantity-control { display: flex; align-items: center; gap: 12px; }
+    .quantity-control button { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #cbd2c8; border-radius: 50%; background: transparent; cursor: pointer; }
+    .quantity-control button:disabled { opacity: .4; cursor: not-allowed; }
+    .quantity-value { min-width: 15px; text-align: center; font-size: 12px; }
+    .cart-empty { padding: 26px 0; color: var(--muted); text-align: center; font-size: 13px; }
+    .cart-total { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-top: 1px solid var(--line); font-size: 13px; }
+    .cart-total strong { font-family: var(--serif); font-size: 21px; font-weight: 500; }
+    .cart-note, .checkout-note { color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .checkout-fields { display: grid; gap: 12px; margin: 15px 0; }
+    .checkout-fields label { display: grid; gap: 6px; font-size: 11px; }
+    .checkout-fields input, .checkout-fields textarea { width: 100%; padding: 11px 12px; border: 1px solid #d5dbd1; border-radius: 0; outline-color: var(--moss); background: white; color: var(--ink); font-size: 13px; }
+    .checkout-fields textarea { min-height: 72px; resize: vertical; }
+    .checkout-submit { width: 100%; margin-top: 5px; }
+    .checkout-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
     .ingredient-band { display: grid; grid-template-columns: 1fr 1fr; min-height: 430px; background: #dce5d8; }
     .ingredient-image { min-height: 390px; background: #d7ddce url("https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=85") center / cover; }
@@ -140,6 +165,7 @@
       .newsletter { align-items: flex-start; flex-direction: column; padding: 48px 7%; gap: 25px; }
       .newsletter-form { width: 100%; }
       footer { align-items: flex-start; flex-direction: column; padding: 24px 7%; }
+      .cart-dialog-inner { padding: 22px 18px; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
@@ -190,19 +216,19 @@
       <div class="products">
         <article class="product-card">
           <div class="product-photo"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80" alt="Soft, creamy natural soap bar"><span class="badge">A customer favorite</span></div>
-          <div class="product-info"><div class="product-title-line"><h3>Oat & Honey</h3><span class="price">$12</span></div><p>A comforting little hug for your skin.</p><button class="add-button" type="button" data-product="Oat & Honey">Add to bag</button></div>
+          <div class="product-info"><div class="product-title-line"><h3>Oat & Honey</h3><span class="price">$12</span></div><p>A comforting little hug for your skin.</p><button class="add-button" type="button" data-product="Oat & Honey" data-price="12">Add to bag</button></div>
         </article>
         <article class="product-card">
           <div class="product-photo"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80" alt="Botanical skincare with fresh green leaves"><span class="badge">Fresh & uplifting</span></div>
-          <div class="product-info"><div class="product-title-line"><h3>Rosemary Mint</h3><span class="price">$12</span></div><p>A bright, garden-fresh wake-up call.</p><button class="add-button" type="button" data-product="Rosemary Mint">Add to bag</button></div>
+          <div class="product-info"><div class="product-title-line"><h3>Rosemary Mint</h3><span class="price">$12</span></div><p>A bright, garden-fresh wake-up call.</p><button class="add-button" type="button" data-product="Rosemary Mint" data-price="12">Add to bag</button></div>
         </article>
         <article class="product-card">
           <div class="product-photo"><img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80" alt="Warm-toned handmade body care"><span class="badge">A quiet moment</span></div>
-          <div class="product-info"><div class="product-title-line"><h3>Lavender Fields</h3><span class="price">$12</span></div><p>Unwind with a soft, floral lather.</p><button class="add-button" type="button" data-product="Lavender Fields">Add to bag</button></div>
+          <div class="product-info"><div class="product-title-line"><h3>Lavender Fields</h3><span class="price">$12</span></div><p>Unwind with a soft, floral lather.</p><button class="add-button" type="button" data-product="Lavender Fields" data-price="12">Add to bag</button></div>
         </article>
         <article class="product-card">
           <div class="product-photo"><img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80&sat=-35" alt="Gentle handmade soap in natural light"><span class="badge">A little sunshine</span></div>
-          <div class="product-info"><div class="product-title-line"><h3>Citrus Grove</h3><span class="price">$12</span></div><p>Sunny citrus notes to brighten your day.</p><button class="add-button" type="button" data-product="Citrus Grove">Add to bag</button></div>
+          <div class="product-info"><div class="product-title-line"><h3>Citrus Grove</h3><span class="price">$12</span></div><p>Sunny citrus notes to brighten your day.</p><button class="add-button" type="button" data-product="Citrus Grove" data-price="12">Add to bag</button></div>
         </article>
       </div>
     </section>
@@ -250,32 +276,150 @@
     <div class="footer-links"><a href="#shop">Shop</a><a href="#story">Our story</a><a href="mailto:hello@aroobaskincare.com">Get in touch</a></div>
     <span>© <span id="year"></span> Arooba's Skincare</span>
   </footer>
+  <dialog class="cart-dialog" aria-labelledby="cart-title">
+    <div class="cart-dialog-inner">
+      <div class="cart-header">
+        <div><p class="eyebrow">A little something for you</p><h2 id="cart-title">Your bag</h2></div>
+        <button class="close-cart" type="button" aria-label="Close shopping bag">×</button>
+      </div>
+      <div class="cart-lines" aria-live="polite"></div>
+      <p class="cart-empty">Your bag is waiting for something lovely.</p>
+      <div class="cart-total"><span>Subtotal</span><strong>$0.00</strong></div>
+      <p class="cart-note">Delivery charges, if any, can be confirmed when we contact you.</p>
+      <form class="checkout-form">
+        <div class="checkout-fields">
+          <label>Your name<input name="customerName" autocomplete="name" required maxlength="80"></label>
+          <label>Your phone number<input name="customerPhone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="20"></label>
+          <label>Delivery address<textarea name="deliveryAddress" autocomplete="street-address" required maxlength="300"></textarea></label>
+        </div>
+        <button class="button checkout-submit" type="submit" disabled>Continue to WhatsApp <span aria-hidden="true">→</span></button>
+        <p class="checkout-note">WhatsApp will open with your order details. Review the message and press Send to place your order.</p>
+      </form>
+    </div>
+  </dialog>
   <div class="toast" role="status" aria-live="polite"></div>
 
   <script>
     const cartButton = document.querySelector(".cart-button");
     const cartCount = document.querySelector(".cart-count");
     const toast = document.querySelector(".toast");
-    let itemCount = 0;
+    const cartDialog = document.querySelector(".cart-dialog");
+    const cartLines = document.querySelector(".cart-lines");
+    const cartEmpty = document.querySelector(".cart-empty");
+    const cartTotal = document.querySelector(".cart-total strong");
+    const checkoutButton = document.querySelector(".checkout-submit");
+    const checkoutForm = document.querySelector(".checkout-form");
+    const whatsappNumber = "923121258005";
+    const cart = new Map();
     let toastTimer;
 
-    document.querySelectorAll(".add-button").forEach((button) => {
-      button.addEventListener("click", () => {
-        itemCount += 1;
-        cartCount.textContent = itemCount;
-        cartButton.setAttribute("aria-label", `Shopping bag, ${itemCount} ${itemCount === 1 ? "item" : "items"}`);
-        toast.textContent = `${button.dataset.product} added to your bag`;
-        toast.classList.add("visible");
-        window.clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(() => toast.classList.remove("visible"), 2400);
-      });
-    });
+    const formatPrice = (amount) => `$${amount.toFixed(2)}`;
+    const getItemCount = () => [...cart.values()].reduce((total, item) => total + item.quantity, 0);
 
-    cartButton.addEventListener("click", () => {
-      toast.textContent = itemCount ? `Your bag has ${itemCount} ${itemCount === 1 ? "lovely bar" : "lovely bars"}` : "Your bag is waiting for something lovely";
+    function renderCart() {
+      const items = [...cart.values()];
+      cartLines.replaceChildren();
+      items.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "cart-line";
+
+        const details = document.createElement("div");
+        const name = document.createElement("p");
+        name.className = "cart-item-name";
+        name.textContent = item.name;
+        const price = document.createElement("span");
+        price.className = "cart-item-price";
+        price.textContent = `${formatPrice(item.price)} each`;
+        details.append(name, price);
+
+        const controls = document.createElement("div");
+        controls.className = "quantity-control";
+        const decrement = document.createElement("button");
+        decrement.type = "button";
+        decrement.dataset.action = "decrease";
+        decrement.dataset.product = item.name;
+        decrement.setAttribute("aria-label", `Remove one ${item.name}`);
+        decrement.textContent = "−";
+        const quantity = document.createElement("span");
+        quantity.className = "quantity-value";
+        quantity.textContent = item.quantity;
+        const increment = document.createElement("button");
+        increment.type = "button";
+        increment.dataset.action = "increase";
+        increment.dataset.product = item.name;
+        increment.setAttribute("aria-label", `Add one ${item.name}`);
+        increment.textContent = "+";
+        increment.disabled = item.quantity >= 99;
+        controls.append(decrement, quantity, increment);
+        row.append(details, controls);
+        cartLines.append(row);
+      });
+
+      const count = getItemCount();
+      const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      cartCount.textContent = count;
+      cartButton.setAttribute("aria-label", `Shopping bag, ${count} ${count === 1 ? "item" : "items"}`);
+      cartTotal.textContent = formatPrice(total);
+      cartEmpty.hidden = items.length > 0;
+      cartLines.hidden = items.length === 0;
+      checkoutButton.disabled = items.length === 0;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
       toast.classList.add("visible");
       window.clearTimeout(toastTimer);
       toastTimer = window.setTimeout(() => toast.classList.remove("visible"), 2400);
+    }
+
+    document.querySelectorAll(".add-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const name = button.dataset.product;
+        const existing = cart.get(name);
+        if (existing) {
+          if (existing.quantity < 99) existing.quantity += 1;
+        } else {
+          cart.set(name, { name, price: Number(button.dataset.price), quantity: 1 });
+        }
+        renderCart();
+        showToast(`${name} added to your bag`);
+      });
+    });
+
+    cartButton.addEventListener("click", () => cartDialog.showModal());
+    document.querySelector(".close-cart").addEventListener("click", () => cartDialog.close());
+    cartLines.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+      const item = cart.get(button.dataset.product);
+      if (!item) return;
+      if (button.dataset.action === "increase" && item.quantity < 99) item.quantity += 1;
+      if (button.dataset.action === "decrease") {
+        item.quantity -= 1;
+        if (item.quantity <= 0) cart.delete(item.name);
+      }
+      renderCart();
+    });
+
+    checkoutForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!checkoutForm.reportValidity() || cart.size === 0) return;
+      const formData = new FormData(checkoutForm);
+      const items = [...cart.values()];
+      const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const orderLines = items.map((item) => `- ${item.name} x${item.quantity}: ${formatPrice(item.price * item.quantity)}`);
+      const message = [
+        "Hello Arooba's Skincare! I'd like to place an order:",
+        "",
+        ...orderLines,
+        "",
+        `Subtotal: ${formatPrice(total)}`,
+        `Name: ${formData.get("customerName")}`,
+        `Phone: ${formData.get("customerPhone")}`,
+        `Delivery address: ${formData.get("deliveryAddress")}`
+      ].join("\n");
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     });
 
     document.querySelector(".newsletter-signup").addEventListener("submit", (event) => {
@@ -286,6 +430,7 @@
     });
 
     document.querySelector("#year").textContent = new Date().getFullYear();
+    renderCart();
   </script>
 </body>
 </html>
